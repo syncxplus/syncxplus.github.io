@@ -2,6 +2,6 @@
     "useSideMenu": true,
     "lineBreaks": "gfm",
     "anchorCharacter": "&#x2693;",
-    "additionalFooterText": "<a style='float:right' href='http://www.miitbeian.gov.cn'>蜀ICP备14013839号</a><br/>",
+    "additionalFooterText": "<a style='float:right' href='http://www.beian.miit.gov.cn'>蜀ICP备14013839号</a><br/>",
     "title": "markdown"
 }
