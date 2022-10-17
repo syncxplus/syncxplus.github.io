@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>登录</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <link rel="icon" href="http://qiniu.syncxplus.com/logo/testbird.png?imageView2/0/w/100"/>
+    <script src="/js/common.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <style>
+        .login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .input {
+            margin: 10px auto;
+        }
+        .input>span {
+            width: 80px;
+            display: inline-block;
+            text-align: left;
+            padding-right: 10px;
+        }
+        .input>input {
+            width: 200px;
+        }
+        .btn-group {
+            margin: 10px auto;
+            display: flex;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+<div class="login">
+    <div class="input"><span>用户名</span><input id="username" name="username" type="text"/></div>
+    <div class="input"><span>密码</span><input id="password" name="password" type="password"/></div>
+    <div class="btn-group">
+        <div id="login-wxuser" class="btn btn-default">授权</div>
+        <div id="login-submit" class="btn btn-primary">提交</div>
+    </div>
+</div>
+<a class="icp" href="//beian.miit.gov.cn" rel="nofollow">蜀ICP备14013839号-2</a>
+<script src="//cdn.bootcss.com/blueimp-md5/2.6.0/js/md5.min.js"></script>
+<script>
+    $(function () {
+        var btnGroup = $(".btn-group");
+        btnGroup.css("width", $(".input").width());
+        $(".login").css("height", $(window).height() - btnGroup.outerHeight());
+
+        $("#login-submit").click(function () {
+            var username = $("#username").val().trim();
+            var password = $("#password").val().trim();
+            if (!username) {
+                alert("用户名不能为空");
+                return $("#username").focus();
+            } else if (!password) {
+                alert("密码不能为空");
+                return $("#password").focus();
+            }
+            $.post(location.href, {username: username, password: md5(password)})
+                .done(function (data) {
+                    console.log(data)
+                    var json = JSON.parse(data);
+                    if (json.error.code === 0) {
+                        location.href = getCookie("target");
+                    } else {
+                        alert(data);
+                    }
+                })
+                .fail(function (error) {
+                    console.error(error);
+                    alert(error);
+                })
+        });
+
+        $("#login-wxuser").click(function () {
+            location.href = "/auth?ts=" + new Date().getTime();
+        });
+    });
+</script>
+</body>
+</html>
